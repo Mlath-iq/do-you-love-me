@@ -2,7 +2,12 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
 <title>Love</title>
 
 <style>
@@ -18,10 +23,14 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  background:linear-gradient(135deg,#2b2024,#4b353b,#2b2024);
+  background:linear-gradient(
+    135deg,
+    #2b2024,
+    #4b353b,
+    #2b2024
+  );
   overflow:hidden;
   color:white;
-  cursor:none; /* ✨ اخفاء الماوس */
 }
 
 .container{
@@ -69,16 +78,18 @@ body{
   transition:0.3s;
 }
 
-/* 🔥 hover */
 .btn:hover{
   transform:scale(1.1);
-  box-shadow:0 0 35px #ff4f8b, 0 0 60px #ff5c93;
+  box-shadow:
+    0 0 35px #ff4f8b,
+    0 0 60px #ff5c93;
 }
 
 .btn:active{
   transform:scale(0.95);
 }
 
+/* شاشة الأغنية */
 .music-box{
   display:none;
   background:rgba(255,255,255,.08);
@@ -110,6 +121,7 @@ body{
   border-radius:20px;
   margin:15px auto;
   overflow:hidden;
+  cursor:pointer;
 }
 
 #bar{
@@ -122,6 +134,7 @@ body{
 .time{
   display:flex;
   justify-content:space-between;
+  direction:ltr;
   width:85%;
   margin:auto;
   font-size:14px;
@@ -147,7 +160,6 @@ body{
   transition:0.3s;
 }
 
-/* 🔥 hover للصوت */
 .control:hover{
   transform:scale(1.2);
   box-shadow:0 0 35px #ff5c93;
@@ -157,46 +169,39 @@ body{
   transform:scale(0.9);
 }
 
+/* القلوب المتحركة */
 .heart{
   position:fixed;
   color:#ff5c93;
   font-size:35px;
   animation:float 6s linear infinite;
   opacity:.35;
+  pointer-events:none;
 }
 
 @keyframes float{
-  from{transform:translateY(100vh); opacity:0;}
-  30%{opacity:.5;}
-  to{transform:translateY(-120px); opacity:0;}
-}
+  from{
+    transform:translateY(100vh);
+    opacity:0;
+  }
 
-/* ✨ الماوس */
-.cursor{
-  position:fixed;
-  width:20px;
-  height:20px;
-  background:#ff5c93;
-  border-radius:50%;
-  pointer-events:none;
-  transform:translate(-50%,-50%);
-  z-index:9999;
-  box-shadow:0 0 15px #ff5c93, 0 0 30px #ff2e78;
-  transition:transform 0.1s;
-}
+  30%{
+    opacity:.5;
+  }
 
-.cursor.active{
-  transform:translate(-50%,-50%) scale(1.8);
+  to{
+    transform:translateY(-120px);
+    opacity:0;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="cursor" id="cursor"></div>
-
 <audio id="music">
   <source src="song.mp4" type="audio/mp4">
+  متصفحك لا يدعم تشغيل الصوت.
 </audio>
 
 <div class="heart" style="left:10%; animation-delay:0s;">❤</div>
@@ -206,24 +211,35 @@ body{
 
 <div class="container">
 
+  <!-- الرسائل -->
   <div class="card" id="mainCard">
-    <img id="photo" src="1.jpg">
+
+    <img id="photo" src="1.jpg" alt="صورة">
 
     <div class="text-box" id="text">
-     هلو شهودة
+      هلو بيب
     </div>
 
-    <button class="btn" onclick="nextSlide()" id="buttonText">
-      هاااا
+    <button
+      class="btn"
+      id="buttonText"
+      onclick="nextSlide()"
+    >
+      هلوو
     </button>
+
   </div>
 
+  <!-- شاشة الأغنية -->
   <div class="music-box" id="musicBox">
-    <div class="music-title">🎵 بوسة ماكو لشفتييي </div>
 
-    <img src="6.jpg">
+    <div class="music-title">
+      🎵 بوسة ماكو لشفتييي
+    </div>
 
-    <div class="progress">
+    <img src="6.jpg" alt="صورة الأغنية">
+
+    <div class="progress" id="progress">
       <span id="bar"></span>
     </div>
 
@@ -233,12 +249,30 @@ body{
     </div>
 
     <div class="controls">
-      <button class="control" onclick="rewind()">⏮</button>
-      <button class="control" onclick="togglePlay()" id="playBtn">▶</button>
-      <button class="control" onclick="forward()">⏭</button>
+
+      <button class="control" onclick="rewind()">
+        ⏮
+      </button>
+
+      <button
+        class="control"
+        onclick="togglePlay()"
+        id="playBtn"
+      >
+        ▶
+      </button>
+
+      <button class="control" onclick="forward()">
+        ⏭
+      </button>
+
     </div>
 
-    <button class="btn" onclick="restart()">♡ يلا ولي ثولة </button>
+    <!-- يرجع لأول رسالة -->
+    <button class="btn" onclick="restart()">
+      ♡ يلا ولي ثولة
+    </button>
+
   </div>
 
 </div>
@@ -246,86 +280,167 @@ body{
 <script>
 let index = 0;
 
-let slides = [
-  {img:"1.jpg", text:"هلو بيب", btn:"هلوو"},
-  {img:"2.jpg", text:"حيوانة عندي سؤال الج ثولة", btn:"ها زمال؟"},
-  {img:"3.jpg", text:"بس مستحي اسألج اياه ", btn:"اي دكوللل"},
-  {img:"4.jpg", text:"تحبين عبود لو لا؟", btn:"ها "},
-  {img:"5.jpg", text:" ها حيوانة تحبيني", btn:" لا"},
-  {img:"6.jpg", text:"اذا تحبين علي دوسي جوة ", btn:"انجب"},
-  {img:"7.jpg", text:"ها حيوانة طلعتي تحبيني تفففف", btn:"اتفييييي"}
+const slides = [
+  {
+    img:"1.jpg",
+    text:"هلو شهودات",
+    btn:"هلوو"
+  },
+  {
+    img:"2.jpg",
+    text:"حيوانة عندي سؤال الج ثولة",
+    btn:"ها زمال؟"
+  },
+  {
+    img:"3.jpg",
+    text:"بس مستحي أسألج إياه",
+    btn:"إي دكوللل"
+  },
+  {
+    img:"4.jpg",
+    text:"تحبين عبود لو لا؟",
+    btn:"ها"
+  },
+  {
+    img:"5.jpg",
+    text:"ها حيوانة تحبيني",
+    btn:"لا"
+  },
+  {
+    img:"6.jpg",
+    text:"إذا تحبين علي دوسي جوة",
+    btn:"انجب"
+  },
+  {
+    img:"7.jpg",
+    text:"ها حيوانة طلعتي تحبيني تفففف",
+    btn:"اتفييييي"
+  }
 ];
 
-let music = document.getElementById("music");
-let playBtn = document.getElementById("playBtn");
-let bar = document.getElementById("bar");
-let current = document.getElementById("current");
-let duration = document.getElementById("duration");
+const photo = document.getElementById("photo");
+const text = document.getElementById("text");
+const buttonText = document.getElementById("buttonText");
+const mainCard = document.getElementById("mainCard");
+const musicBox = document.getElementById("musicBox");
 
+const music = document.getElementById("music");
+const playBtn = document.getElementById("playBtn");
+const bar = document.getElementById("bar");
+const current = document.getElementById("current");
+const duration = document.getElementById("duration");
+const progress = document.getElementById("progress");
+
+/* الانتقال بين الرسائل */
 function nextSlide(){
   index++;
+
   if(index < slides.length){
-    photo.src = slides[index].img;
-    text.innerHTML = slides[index].text;
-    buttonText.innerHTML = slides[index].btn;
+    showSlide(index);
   }else{
     mainCard.style.display = "none";
     musicBox.style.display = "block";
   }
 }
 
+function showSlide(slideIndex){
+  photo.src = slides[slideIndex].img;
+  text.textContent = slides[slideIndex].text;
+  buttonText.textContent = slides[slideIndex].btn;
+}
+
+/* تشغيل وإيقاف الأغنية */
 function togglePlay(){
   if(music.paused){
     music.play();
-    playBtn.innerHTML = "⏸";
+    playBtn.textContent = "⏸";
   }else{
     music.pause();
-    playBtn.innerHTML = "▶";
+    playBtn.textContent = "▶";
   }
 }
 
-function rewind(){ music.currentTime -= 5; }
-function forward(){ music.currentTime += 5; }
-
-music.addEventListener("timeupdate", function(){
-  let percent = (music.currentTime / music.duration) * 100;
-  bar.style.width = percent + "%";
-  current.innerHTML = formatTime(music.currentTime);
-  duration.innerHTML = formatTime(music.duration);
-});
-
-function formatTime(t){
-  if(isNaN(t)) return "0:00";
-  let m = Math.floor(t/60);
-  let s = Math.floor(t%60);
-  if(s<10) s="0"+s;
-  return m+":"+s;
+/* ترجيع 5 ثوانٍ */
+function rewind(){
+  music.currentTime = Math.max(
+    0,
+    music.currentTime - 5
+  );
 }
 
+/* تقديم 5 ثوانٍ */
+function forward(){
+  music.currentTime = Math.min(
+    music.duration || 0,
+    music.currentTime + 5
+  );
+}
+
+/* تحديث شريط الأغنية */
+music.addEventListener("timeupdate", function(){
+  if(!isNaN(music.duration) && music.duration > 0){
+    const percent =
+      (music.currentTime / music.duration) * 100;
+
+    bar.style.width = percent + "%";
+  }
+
+  current.textContent = formatTime(music.currentTime);
+  duration.textContent = formatTime(music.duration);
+});
+
+/* إظهار مدة الأغنية */
+music.addEventListener("loadedmetadata", function(){
+  duration.textContent = formatTime(music.duration);
+});
+
+/* عند انتهاء الأغنية */
+music.addEventListener("ended", function(){
+  playBtn.textContent = "▶";
+  bar.style.width = "0%";
+});
+
+/* الضغط على شريط الأغنية */
+progress.addEventListener("click", function(event){
+  if(isNaN(music.duration)) return;
+
+  const box = progress.getBoundingClientRect();
+  const position = event.clientX - box.left;
+  const percent = position / box.width;
+
+  music.currentTime = percent * music.duration;
+});
+
+/* تنسيق الوقت */
+function formatTime(time){
+  if(isNaN(time)) return "0:00";
+
+  const minutes = Math.floor(time / 60);
+  let seconds = Math.floor(time % 60);
+
+  if(seconds < 10){
+    seconds = "0" + seconds;
+  }
+
+  return minutes + ":" + seconds;
+}
+
+/* الرجوع لأول رسالة */
 function restart(){
   index = 0;
+
   music.pause();
   music.currentTime = 0;
-  playBtn.innerHTML = "▶";
+
+  playBtn.textContent = "▶";
+  bar.style.width = "0%";
+  current.textContent = "0:00";
+
   mainCard.style.display = "block";
   musicBox.style.display = "none";
-  photo.src = slides[0].img;
-  text.innerHTML = slides[0].text;
-  buttonText.innerHTML = slides[0].btn;
+
+  showSlide(0);
 }
-
-/* ✨ حركة الماوس */
-let cursor = document.getElementById("cursor");
-
-document.addEventListener("mousemove", e=>{
-  cursor.style.left = e.clientX + "px";
-  cursor.style.top = e.clientY + "px";
-});
-
-document.querySelectorAll("button").forEach(btn=>{
-  btn.addEventListener("mouseenter", ()=>cursor.classList.add("active"));
-  btn.addEventListener("mouseleave", ()=>cursor.classList.remove("active"));
-});
 </script>
 
 </body>
